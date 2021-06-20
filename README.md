@@ -42,7 +42,7 @@
 
 - **CN vs GGM**
     - CN(correlation network)는 Correlation에 따라 node를 단순히 연결한 네트워크다. 직/간접적 연관성 구분이 없고 대규모 데이터에서 연관성이 과다하게 나타나서 시각화 결과를 한 눈에 파악하는 것이 어려운 것이 단점이다. 
-    - GGM(Gaussian Graphical Model)은 미미한 상관관계를 0으로 축소하여 시각화 결과를 한 눈에 파악하기 쉬우며 직/간접적 연관성을 정확히 구분하는 네트워크 구조다.
+    - GGM(Gaussian Graphical Model)은 미미한 상관관계를 0으로 축소하여 시각화 결과를 한 눈에 파악하기 쉬우며 직/간접적 연관성을 정확히 구분하는 네트워크 구조다. 더욱 효과적인 분석과 시각화 결과 제공을 위해 네트워크를 GGM으로 만들어준다.
 
 
 <p align="center"><img width="538" alt="20210621_060021" src="https://user-images.githubusercontent.com/64299475/122688233-0f42f980-d256-11eb-88b7-b132ed1368d4.png"></p>
