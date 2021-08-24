@@ -1,6 +1,6 @@
 # 그래프 이론 기반 정신질환 증상 평가 점수 네트워크 분석 SW 개발: <br> 개인 및 사회적 수행 척도와 주관적 안녕감 척도를 중심으로 
 `2021-1 KyungHee univ. Software Convergence Capstone Design`<br><br>
-<img src= "https://img.shields.io/badge/language-R-pink"> <img src= "https://img.shields.io/github/last-commit/2017100898/Algorithm?color=lavender&label=last%20commit">
+<img src= "https://img.shields.io/badge/language-R-pink"> <img src= "https://img.shields.io/github/last-commit/2017100898/swcon_cd?color=lavender&label=last%20commit">
 
 ## Overview
 - **과제 선정 배경 및 필요성**
