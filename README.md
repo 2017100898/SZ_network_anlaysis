@@ -55,21 +55,20 @@
         x = 2 * sin(pi/6 * cor(x, method = "spearman"))
         ~~~
 
-   - 데이터의 correlation matrix를 구축하는 bootnet estimateNetwork 함수에서도 npn 함수를 사용할 수 있으나, skeptic 공식이 아닌 shrunkun ECDF 공식을 사용하기 때문에 trace 함수를 사용하여 estimateNetwork 함수를 아래처럼 수정해 줘야 한다.  <br>
+   - 데이터의 correlation matrix를 구축하는 bootnet estimateNetwork 함수에서도 npn 함수를 사용할 수 있으나, skeptic 공식이 아닌 shrunkun ECDF 공식을 사용하기 때문에 trace 함수를 사용하여 bootnet_correlate 함수를 아래처럼 수정해 줘야 한다.  <br>
 
         ~~~R
-        trace(bootnet:::estimateNetwork, edit = T)
+        trace(bootnet:::bootnet_correlate, edit=T)
         ~~~
         
         ~~~R
         if (corMethod == "npn") {
-           data <- huge::huge.npn(data, npn.func = "skeptic")
-           corMethod <- "cor"
+           corMat <- huge::huge.npn(data, npn.func = "skeptic")
         }
         ~~~
    
 - **Tuning Parameter**
-    - tuning parameter은 Lasso에서의 lambda 값을 뜻하며, 0.005, 0.01, 0.05, 0.1, 0.5 값으로 시각화 결과를 만들었을 때, 0.1 값에서 가장 직관적인 해석이 가능한 네트워크 구조가 도출 된다고 판단하여 0.1로 선정하였다.
+    - tuning parameter은 EBIC 값을 뜻하며, 0.005, 0.01, 0.05, 0.1, 0.5 값으로 시각화 결과를 만들었을 때, 0.1 값에서 가장 직관적인 해석이 가능한 네트워크 구조가 도출 된다고 판단하여 0.1로 선정하였다.
     - 이 과정을 통해 임계값보다 작은 Correlation을 0으로 대치하여 edge의 개수를 줄일 수 있으며 아래 함수를 통해 최종적으로 network matrix를 추정할 수 있게 된다. <br>
     
         ~~~R
