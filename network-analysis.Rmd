@@ -1,8 +1,6 @@
 ---
 title: "PSP/SWN Network Analysis"
-output:
-  html_document:
-    df_print: paged
+output: rmarkdown::github_document
 ---
 
 
