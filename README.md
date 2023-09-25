@@ -1,6 +1,4 @@
 # 그래프 이론 기반 정신질환 증상 평가 점수 네트워크 분석 및 시각화
-<img src= "https://img.shields.io/github/last-commit/2017100898/swcon_cd?color=lavender&label=last%20commit">
-
 ## Overview
 - **연구 배경**
     - 조현병 (Schizophrenia)은 개인 및 사회적으로 큰 영향을 미치고 기능적으로 심각한 증상을 보이는 질병이다.  
