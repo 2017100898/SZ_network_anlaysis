@@ -1,0 +1,134 @@
+---
+title: "PSP/SWN Network Analysis"
+output:
+  html_document:
+    df_print: paged
+---
+
+
+```{r message=FALSE, warning=FALSE}
+library("qgraph")
+library("bootnet")
+library(dplyr)
+library(readxl)
+library("huge")
+options(max.print=1000000)
+```
+
+```{r message=FALSE, warning=FALSE}
+hier = read_excel("./pspswn-data.xlsx")
+hier <- na.omit(hier)
+```
+
+```{r message=FALSE, warning=FALSE}
+cluster1 <- subset(hier, hier==1)
+cluster2 <- subset(hier, hier==2)
+cluster3 <- subset(hier, hier==3)
+cluster4 <- subset(hier, hier==4)
+cluster0 <- hier
+
+cluster0 <- cluster0[, -25]
+cluster1 <- cluster1[, -25]
+cluster2 <- cluster2[, -25]
+cluster3 <- cluster3[, -25]
+cluster4 <- cluster4[, -25]
+
+groups =  list("PSP" = 1:4, "SWN-K" = 5:24)
+groups
+```
+
+```{r message=FALSE, warning=FALSE}
+trace(bootnet:::bootnet_correlate,edit=T)
+```
+
+```
+function (data, corMethod = c("cor", "cor_auto", "cov", "npn", 
+    "spearman"), corArgs = list(), missing = c("pairwise", "listwise", 
+    "fiml", "stop"), verbose = TRUE, nonPositiveDefinite = c("stop", 
+    "continue"), transform = c("none", "rank", "quantile")) 
+{
+    transform <- match.arg(transform)
+    if (transform == "rank") {
+        data <- rank_transformation(data)
+    }
+    else if (transform == "quantile") {
+        data <- quantile_transformation(data)
+    }
+    nonPositiveDefinite <- match.arg(nonPositiveDefinite)
+    corMethod <- match.arg(corMethod)
+    missing <- match.arg(missing)
+    if (corMethod == "npn") {
+        corMat <- huge::huge.npn(data, npn.func = "skeptic")
+    }
+    return(corMat)
+}
+```
+
+```{r message=FALSE, warning=FALSE}
+trace(qgraph:::EBICglassoCore, edit=T)
+```
+
+```
+delete
+    if (checkPD) {
+        if (any(eigen(S)$values < 0)) 
+            stop("'S' is not positive definite")
+    }
+```
+
+```{r}
+hcorr00 <- huge.npn(cluster0, npn.func='skeptic')
+hcorr01 <- huge.npn(cluster1, npn.func='skeptic')
+hcorr02 <- huge.npn(cluster2, npn.func='skeptic')
+hcorr03 <- huge.npn(cluster3, npn.func='skeptic')
+hcorr04 <- huge.npn(cluster4, npn.func='skeptic')
+
+```
+
+
+
+```{r message=FALSE, warning=FALSE}
+hnet0 <-estimateNetwork(cluster0, default = "glasso" ,  corMethod = "npn", tuning = 0.1)
+plot(hnet0, groups=groups, color=c( "#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", vsize=8, esize=25, borders=FALSE)
+write.csv(hnet0[["graph"]], file = "./hnet00.csv", row.names = TRUE)
+
+hnet1 <-estimateNetwork(cluster1, default = "glasso" ,  corMethod = "npn", tuning = 0.1)
+plot(hnet1, groups=groups, color=c( "#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", vsize=8, esize=25, borders=FALSE)
+write.csv(hnet1[["graph"]], file = "./hnet01.csv", row.names = TRUE)
+
+hnet2 <-estimateNetwork(cluster2, default = "glasso" ,  corMethod = "npn", tuning = 0.1)
+plot(hnet2, groups=groups, color=c( "#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", vsize=8, esize=25, borders=FALSE)
+write.csv(hnet2[["graph"]], file = "./hnet02.csv", row.names = TRUE)
+
+hnet3 <-estimateNetwork(cluster3, default = "glasso" ,  corMethod = "npn", tuning = 0.1)
+plot(hnet3, groups=groups, color=c( "#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", vsize=8, esize=25, borders=FALSE)
+write.csv(hnet3[["graph"]], file = "./hnet03.csv", row.names = TRUE)
+
+hnet4 <-estimateNetwork(cluster4, default = "glasso" ,  corMethod = "npn", tuning = 0.1)
+plot(hnet4, groups=groups, color=c( "#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", vsize=8, esize=25, borders=FALSE)
+write.csv(hnet4[["graph"]], file = "./hnet04.csv", row.names = TRUE)
+
+```
+
+
+```{r message=FALSE, warning=FALSE}
+
+hgra00 <- qgraph(hcorr00, graph = "glasso", sampleSize = nrow(cluster0), tuning = 0.1, layout = "spring", groups=groups, color = c("#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", esize=25, vsize=6, borders=FALSE, lambda.min.ratio = 0.01)
+
+hgra01 <- qgraph(hcorr01, graph = "glasso", sampleSize = nrow(cluster1), tuning = 0.1, layout = "spring", groups=groups, color = c("#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", esize=25, vsize=6, borders=FALSE, lambda.min.ratio = 0.01)
+
+hgra02 <- qgraph(hcorr02, graph = "glasso", sampleSize = nrow(cluster2), tuning = 0.1, layout = "spring", groups=groups, color = c("#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", esize=25, vsize=6, borders=FALSE, lambda.min.ratio = 0.01)
+
+hgra03 <- qgraph(hcorr03, graph = "glasso", sampleSize = nrow(cluster3), tuning = 0.1, layout = "spring", groups=groups, color = c("#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", esize=25, vsize=6, borders=FALSE, lambda.min.ratio = 0.01)
+
+hgra04 <- qgraph(hcorr04, graph = "glasso", sampleSize = nrow(cluster4), tuning = 0.1, layout = "spring", groups=groups, color = c("#DEA5A4", "#C9DECF"), posCol = "#005666", negCol = "red", esize=25, vsize=6, borders=FALSE, lambda.min.ratio = 0.01)
+
+```
+
+```{r message=FALSE, warning=FALSE}
+centralityPlot(list(all=hnet0, clustering1 = hnet1, clustering2 = hnet2,  clustering3 = hnet3,  clustering4 = hnet4), include = c("Strength", "Betweenness", "Closeness"), scale = "z-scores")
+
+```
+
+
+
