@@ -1,6 +1,6 @@
 ---
 title: "PSP/SWN Network Analysis"
-output: rmarkdown::github_document
+output: github_document
 ---
 
 
